@@ -98,7 +98,7 @@ router.post('/reset-password', async (req, res) => {
       if (professor.password) {
           isValidPassword = await bcrypt.compare(currentPassword, professor.password);
       } else {
-        const firstName = proff.Name.split(' ')[0];
+        const firstName = professor.Name.split(' ')[0];
         const expectedPassword = firstName.toLowerCase();
           isValidPassword = (currentPassword === expectedPassword);
       }
