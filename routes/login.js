@@ -1,13 +1,12 @@
 const express = require("express");
-const bodyParser = require("body-parser");
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const { getModel } = require("../models/proffModel");
 
+
 const router = express.Router();
 
 
-router.use(bodyParser.json());
 
 // Login route
 router.post('/', async (req, res) => {
