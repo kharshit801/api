@@ -16,7 +16,7 @@ const studentDetailsRouter = require("./routes/studentDetails");
 const loginRouter = require("./routes/login");
 const ProfileRouter = require('./routes/profile');
 
-const { connectStudentDetails,connectClassSchedulesProff,connectNotifications ,connectProffdetails} = require("./dbConfig");
+const { connectStudentDetails,connectClassSchedulesProff,connectNotifications ,connectProffdetails,connectAttendanceDetails} = require("./dbConfig");
 
 Promise.all([
   connectNotifications,
