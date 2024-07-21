@@ -80,4 +80,47 @@ router.post('/verify-token', (req, res) => {
     });
 });
 
+router.post('/reset-password', async (req, res) => {
+  try {
+      const { email, currentPassword, newPassword } = req.body;
+      
+      const proffModel = getModel();
+      if (!proffModel) {
+          return res.status(500).json({ message: "Database not ready" });
+      }
+
+      const professor = await proffModel.findOne({ Email: email });
+      if (!professor) {
+          return res.status(404).json({ message: "Professor not found" });
+      }
+
+      // Check current password
+      let isValidPassword;
+      if (professor.password) {
+          isValidPassword = await bcrypt.compare(currentPassword, professor.password);
+      } else {
+        const firstName = proff.Name.split(' ')[0];
+        const expectedPassword = firstName.toLowerCase();
+          isValidPassword = (currentPassword === expectedPassword);
+      }
+
+      if (!isValidPassword) {
+          return res.status(401).json({ message: "Current password is incorrect" });
+      }
+
+      // Hash the new password
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+      // Update the password in the database
+      professor.password = hashedPassword;
+      await professor.save();
+
+      res.json({ message: "Password reset successfully" });
+  } catch (error) {
+      console.error('Password reset error:', error);
+      res.status(500).json({ message: "An error occurred during password reset" });
+  }
+});
+
+
 module.exports = router;
